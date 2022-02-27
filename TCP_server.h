@@ -6,7 +6,9 @@
 //If the program is a Linux header 
 
 // #include <sys/socket.h> 
-#include <winsock.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
 typedef int socklen;
 class TCP_server
 {

@@ -3,7 +3,7 @@
 void TCP_server::set_address(short sin_family, u_short sin_port, struct in_addr sin_addr)
 {
     this->address.sin_family = sin_family;
-    this->address.sin_port = sin_port;
+    this->address.sin_port = htons(sin_port);
     this->address.sin_addr = sin_addr;
 }
 
