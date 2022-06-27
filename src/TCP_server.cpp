@@ -1,10 +1,10 @@
 #include "TCP_server.h"
 
-void TCP_server::set_address(short sin_family, u_short sin_port, struct in_addr sin_addr)
+void TCP_server::set_address()
 {
-    this->address.sin_family = sin_family;
-    this->address.sin_port = htons(sin_port);
-    this->address.sin_addr = sin_addr;
+    this->address.sin_family = AF_INET;
+    this->address.sin_port = htons(8080);
+    this->address.sin_addr.s_addr =INADDR_ANY ;
 }
 
 void TCP_server::socket_init()

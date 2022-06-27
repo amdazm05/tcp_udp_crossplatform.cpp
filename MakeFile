@@ -1,0 +1,4 @@
+all:
+	g++ main.cpp -o main -lwsock32 -lwsock32
+remove:
+	rm main

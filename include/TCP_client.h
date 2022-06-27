@@ -8,14 +8,14 @@
 // #include <sys/socket.h> 
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#pragma comment(lib, "ws2_32.lib")
+// #pragma comment(lib, "ws2_32.lib")
 
 typedef int socklen;
 class TCP_client
 {
     public:
     TCP_client();
-    TCP_client(/*Arguments*/);
+    // TCP_client(/*Arguments*/);
     
     //Update the object below 
     void set_address(short   sin_family,

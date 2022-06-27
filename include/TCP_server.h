@@ -8,18 +8,17 @@
 // #include <sys/socket.h> 
 #include <winsock2.h>
 #include <ws2tcpip.h>
+// #pragma comment(lib, "ws2_32.lib")
 
 typedef int socklen;
 class TCP_server
 {
     public:
-    TCP_server();
-    TCP_server(/*Arguments*/);
+    // TCP_server();
+    // TCP_server(/*Arguments*/);
     
     //Update the object below 
-    void set_address(short   sin_family,
-        u_short sin_port,
-        struct in_addr sin_addr);
+    void set_address();
 
     //This will take input as the variable we the handle to be socketfd
     void socket_init();
