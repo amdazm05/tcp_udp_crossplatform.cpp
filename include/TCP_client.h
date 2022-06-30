@@ -14,7 +14,6 @@ typedef int socklen;
 class TCP_client
 {
     public:
-    TCP_client();
     // TCP_client(/*Arguments*/);
     
     //Update the object below 

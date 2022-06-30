@@ -30,14 +30,12 @@ void TCP_client::socket_init()
 
 void TCP_client::connect_to_server()
 {
-    // InetPton(AF_INET, "127.0.0.1", &(this->serv_addr.sin_addr));
-    connect(sockfd, (struct sockaddr *)&(this->serv_addr), sizeof((this->serv_addr)));
-
-    
+    inet_pton(AF_INET, "127.0.0.1", &(this->serv_addr.sin_addr));
+    connect(sockfd, (struct sockaddr *)&(this->serv_addr), sizeof((this->serv_addr)));  
 }
 
 void TCP_client::send_server()
 {
-    // char *hello="Hellow Socket";
-    //  send(sockfd , hello , strlen(hello) , 0 );
+    char *hello="Hellow Socket";
+    send(sockfd , hello , strlen(hello) , 0 );
 }
