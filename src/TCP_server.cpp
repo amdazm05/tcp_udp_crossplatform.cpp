@@ -4,7 +4,7 @@ void TCP_server::set_address()
 {
     this->address.sin_family = AF_INET;
     this->address.sin_port = htons(8080);
-    this->address.sin_addr.s_addr =INADDR_ANY ;
+    this->address.sin_addr.s_addr = inet_addr("127.0.0.1");
 }
 
 void TCP_server::socket_init()
@@ -31,6 +31,7 @@ void TCP_server::socket_init()
 
 void TCP_server::bind_server()
 {
+    std::cout<<this->address.sin_family<<this->address.sin_port<<std::endl;
     bind((this->sockfd), (struct sockaddr *)&(this->address), sizeof(this->address));
 }
 
@@ -50,11 +51,12 @@ void TCP_server::listen_server()
         int client_so = accept(this->sockfd, (struct sockaddr *)&(this->address), &addrlen);
         if(recv(this->sockfd, buffer, 100, 0)<0)
         {
-            std::cout<<"Waiting for message"<<std::endl;
         }
         else
         {
             std::cout<<buffer<<std::endl;
+            break;
         }
     }
+    
 }

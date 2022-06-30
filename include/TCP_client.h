@@ -20,6 +20,7 @@ class TCP_client
     void set_address(short   sin_family,
         u_short sin_port,
         struct in_addr sin_addr);
+    void set_address();
 
     //This will take input as the variable we the handle to be socketfd
     void socket_init();
@@ -32,7 +33,6 @@ class TCP_client
     int domain;
     int type;
     struct sockaddr_in address; //Check if needed else discards
-    struct sockaddr_in serv_addr; 
     // Protocol 0 is IP
     int protocol;
 
