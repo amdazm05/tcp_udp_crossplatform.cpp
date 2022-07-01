@@ -2,61 +2,61 @@
 #include <iostream>
 void TCP_server::set_address()
 {
-    this->address.sin_family = AF_INET;
-    this->address.sin_port = htons(8080);
-    this->address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    this->server.sin_family = AF_INET;
+    this->server.sin_port = htons(8080);
+    this->server.sin_addr.s_addr = inet_addr("127.0.0.1");
 }
 
 void TCP_server::socket_init()
 {
-    //Definition 
-    //int sockfd = socket(domain, type, protocol)
-    /*
-    sockfd: socket descriptor, an integer (like a file-handle)
-    
-    domain: integer, communication domain e.g., AF_INET (IPv4 protocol) , AF_INET6 (IPv6 protocol)
-    
-    type: communication type
-    
-    SOCK_STREAM: TCP(reliable, connection oriented)
-    
-    SOCK_DGRAM: UDP(unreliable, connectionless)
-    
-    protocol: Protocol value for Internet Protocol(IP), which is 0. 
-    This is the same number which appears on protocol field in the IP header of a packet.(man protocols for more deta
-    */
-    this->sockfd = socket(AF_INET,SOCK_STREAM,0);
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+        std::cout<<"Failed WSAStartup.\n"; 
+    this->set_address();
+    if ((server_so = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+            std::cout<<"Failed socket.\n";
 
 }
 
 void TCP_server::bind_server()
 {
-    std::cout<<this->address.sin_family<<this->address.sin_port<<std::endl;
-    bind((this->sockfd), (struct sockaddr *)&(this->address), sizeof(this->address));
+     if (bind(server_so, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
+        std::cout<<"Bind failed.\n";
+}
+
+void handle_client(int client_socket)
+{
+    char buffer[BUFFER_SIZE_CLIENT];
+    int receive_message_size;
+
+    while (1)
+    {
+        if ((receive_message_size = recv(client_socket, buffer, BUFFER_SIZE_CLIENT, 0)) < 0)
+            std::cout<<"Error on receive data.\n";
+        buffer[receive_message_size]='\0';
+        std::cout<<"[TCP Client]: "<< buffer<<"\n";
+        if(receive_message_size)
+        {
+            break;
+        }
+    }
+
+    closesocket(client_socket);
 }
 
 void TCP_server::listen_server()
 {
-    // int listen(int sockfd, int backlog);
-// It puts the server socket in a passive mode, where it waits for the client 
-// to approach the server to make a connection. 
-// The backlog, defines the maximum length to which the queue of pending connections for sockfd may grow.
-//  If a connection request arrives when the queue is full, 
-//  the client may receive an error with an indication of ECONNREFUSED
-    char buffer[100]={};
-    listen((this->sockfd), 3);
-    int addrlen=sizeof(this->address);
-    while (1)
+    if (listen(server_so, 100) < 0)
+        std::cout<<"Listen failed.\n";
+   while (1)
     {
-        int client_so = accept(this->sockfd, (struct sockaddr *)&(this->address), &addrlen);
-        if(recv(this->sockfd, buffer, 100, 0)<0)
-        {
-        }
-        else
-        {
-            std::cout<<buffer<<std::endl;
-            break;
-        }
+        client_length = sizeof(client);
+
+        if ((client_so = accept(server_so, (struct sockaddr *)&client, &client_length)) < 0)
+            std::cout<<("Error on accept.\n");
+
+        printf("New connection accepted %s\n", inet_ntoa(client.sin_addr));
+        handle_client(client_so);
     }
+
     
 }

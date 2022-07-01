@@ -1,49 +1,28 @@
 #ifndef _TCPC
 #define _TCPC
-//functions to have here
-//steps to using the TCP header 
-//
-//If the program is a Linux header //TODO 
-#define PORT 8080 
-// #include <sys/socket.h> 
+
+#define PORT 8080
+#define BUFFER_SIZE 200
 #include <winsock2.h>
 #include <ws2tcpip.h>
-// #pragma comment(lib, "ws2_32.lib")
 
-typedef int socklen;
 class TCP_client
 {
-    public:
-    // TCP_client(/*Arguments*/);
-    
-    //Update the object below 
-    void set_address(short   sin_family,
-        u_short sin_port,
-        struct in_addr sin_addr);
-    void set_address();
-
-    //This will take input as the variable we the handle to be socketfd
+public:
     void socket_init();
+    void set_address();
     void connect_to_server();
-    void send_server();
+    void send_server(char *message);
 
-    //Private variables 
-    private:
-    char buffer[1024];
-    int domain;
+private:
+    char buffer[BUFFER_SIZE];
+    char *serverip;
     int type;
-    struct sockaddr_in address; //Check if needed else discards
-    // Protocol 0 is IP
+    struct sockaddr_in server;
+    int bytes_received;
     int protocol;
-
-    int sockfd;
+    SOCKET so;
+    WSADATA wsa;
 };
-
-//Program flow for client side 
-// 1-socket(); 
-// 2-inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
-// 3-connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)); 
-// 4-send(sock , hello , strlen(hello) , 0 ); 
-
 
 #endif
