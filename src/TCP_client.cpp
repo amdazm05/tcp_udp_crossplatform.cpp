@@ -1,9 +1,10 @@
 #include "TCP_client.h"
-
-void TCP_client::set_address(short sin_family, u_short sin_port, struct in_addr sin_addr)
+#include <iostream>
+void TCP_client::set_address()
 {
-    this->serv_addr.sin_family = sin_family;
-    this->serv_addr.sin_port = htons(sin_port);
+    this->address.sin_family = AF_INET;
+    this->address.sin_port = htons(8080);
+    this->address.sin_addr.s_addr = inet_addr("127.0.0.1");
 }
 
 void TCP_client::socket_init()
@@ -30,14 +31,13 @@ void TCP_client::socket_init()
 
 void TCP_client::connect_to_server()
 {
-    // InetPton(AF_INET, "127.0.0.1", &(this->serv_addr.sin_addr));
-    connect(sockfd, (struct sockaddr *)&(this->serv_addr), sizeof((this->serv_addr)));
-
-    
+    std::cout<<address.sin_family<<address.sin_port<<std::endl;  
+    if(connect(sockfd, (struct sockaddr *)&(this->address), sizeof((this->address))< 0))
+        std::cout<<"Error Connecting "<<std::endl;  
 }
 
 void TCP_client::send_server()
 {
-    // char *hello="Hellow Socket";
-    //  send(sockfd , hello , strlen(hello) , 0 );
+    char *hello="Hellow Socket";
+    send(sockfd , hello , strlen(hello) , 0 );
 }

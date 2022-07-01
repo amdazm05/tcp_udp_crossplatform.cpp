@@ -1,10 +1,10 @@
 #include "TCP_server.h"
-
+#include <iostream>
 void TCP_server::set_address()
 {
     this->address.sin_family = AF_INET;
     this->address.sin_port = htons(8080);
-    this->address.sin_addr.s_addr =INADDR_ANY ;
+    this->address.sin_addr.s_addr = inet_addr("127.0.0.1");
 }
 
 void TCP_server::socket_init()
@@ -31,6 +31,7 @@ void TCP_server::socket_init()
 
 void TCP_server::bind_server()
 {
+    std::cout<<this->address.sin_family<<this->address.sin_port<<std::endl;
     bind((this->sockfd), (struct sockaddr *)&(this->address), sizeof(this->address));
 }
 
@@ -42,5 +43,20 @@ void TCP_server::listen_server()
 // The backlog, defines the maximum length to which the queue of pending connections for sockfd may grow.
 //  If a connection request arrives when the queue is full, 
 //  the client may receive an error with an indication of ECONNREFUSED
+    char buffer[100]={};
     listen((this->sockfd), 3);
+    int addrlen=sizeof(this->address);
+    while (1)
+    {
+        int client_so = accept(this->sockfd, (struct sockaddr *)&(this->address), &addrlen);
+        if(recv(this->sockfd, buffer, 100, 0)<0)
+        {
+        }
+        else
+        {
+            std::cout<<buffer<<std::endl;
+            break;
+        }
+    }
+    
 }
