@@ -11,4 +11,8 @@ target_include_directories(
     PUBLIC
     ${PROJECT_SOURCE_DIR}/include
 )
+IF (WIN32)
 target_link_libraries(tcp_udp PUBLIC wsock32 )
+ENDIF()
+
+
