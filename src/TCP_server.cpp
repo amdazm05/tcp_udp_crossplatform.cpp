@@ -1,7 +1,8 @@
 #include "TCP_server.h"
 #include <iostream>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void TCP_server::set_address()
 {
@@ -21,9 +22,10 @@ void TCP_server::socket_init()
     #endif
 
     #if defined(unix) || defined(__unix__) || defined(__unix)
-        this->set_address();
         std::cout<<"Address set \n";
-        if(server_so=socket(AF_INET,SOCK_STREAM,0) <0)
+        this->set_address();
+        this->server_so=socket(AF_INET,SOCK_STREAM,0);
+        if(this->server_so<0)
             std::cout<<"Failed socket. \n";
     #endif
 }
@@ -35,48 +37,36 @@ void TCP_server::bind_server()
         std::cout<<"Bind failed.\n";
     #endif
     #if defined(unix) || defined(__unix__) || defined(__unix)
-        if (bind(server_so, (struct sockaddr *)&server, sizeof(server)) <0)
+        if (bind(this->server_so, (struct sockaddr *)&(server), sizeof(server)) <0)
             std::cout<<"Bind failed.\n";
     #endif
 }
 
 void handle_client(int client_socket)
 {
-    char buffer[BUFFER_SIZE_CLIENT];
-    int receive_message_size;
-
-    while (1)
-    {
-        if ((receive_message_size = recv(client_socket, buffer, BUFFER_SIZE_CLIENT, 0)) < 0)
-            std::cout<<"Error on receive data.\n";
-        buffer[receive_message_size]='\0';
-        std::cout<<"[TCP Client]: "<< buffer<<"\n";
-        if(receive_message_size)
-        {
-            break;
-        }
-    }
-    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
-        closesocket(client_socket);
-    #endif
+    //TODO Revise these requirements 
 }
 
 void TCP_server::listen_server()
 {
-    if (listen(server_so, 10) < 0)
-        std::cout<<"Listen failed.\n";
-    while (1)
+    char buffer[BUFFER_SIZE_CLIENT];
+
+    this->addr_length=sizeof(server);
+    if (listen(server_so, 3) < 0) 
     {
-        client_length = sizeof(client);
-        std::cout<<client_length<<std::endl;
-        if ((client_so = accept(server_so, (struct sockaddr *)&client, &client_length))<0)
-        {   
-            std::cout<<client_so<<std::endl;
-            std::cout<<("Error on accept.\n");
-            break;
+        std::cerr<<"Listen:" <<errno; 
+        exit(EXIT_FAILURE); 
+    } 
+    if ((client_so = accept(this->server_so, (struct sockaddr *)&server,  
+                       (socklen_t*)&(this->addr_length)))<0) 
+        {
+            std::cerr<<"Accept:" <<errno; 
+            exit(EXIT_FAILURE); 
         }
-        
-        printf("New connection accepted %s\n", inet_ntoa(client.sin_addr));
-        handle_client(client_so);
-    }
+    read( client_so , buffer, 1024); 
+    std::cout<<"Recieved data : "<< buffer; 
+    
+    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+        closesocket(client_socket);
+    #endif
 }

@@ -34,14 +34,12 @@ private:
 
     #if defined(unix) || defined(__unix__) || defined(__unix)
         int server_so,client_so;
-        socklen_t client_length;
+        int addr_length;
     #endif
-
     char *ip;
     int bytes_received;
-    
     unsigned short port;
-    struct sockaddr_in server, client;
+    struct sockaddr_in server;
 };
 
 #endif

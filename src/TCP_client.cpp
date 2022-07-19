@@ -6,7 +6,7 @@ void TCP_client::set_address()
 {
     this->server.sin_family = AF_INET;
     this->server.sin_port = htons(8080);
-    this->server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    this->server.sin_addr.s_addr = inet_addr("127.0.0.1"); 
 }
 
 void TCP_client::socket_init()
@@ -20,11 +20,15 @@ void TCP_client::socket_init()
 
     this-> set_address();
     this-> so = socket(AF_INET,SOCK_STREAM,0);
+    if(this->so ==0)
+    {
+        std::cout<<"Socket Failed to Initialised \n";
+    }
 }
 
 void TCP_client::connect_to_server()
 { 
-    if (connect(so, (struct sockaddr *)&server, sizeof server) < 0)
+    if (connect(so, (struct sockaddr *)&server, sizeof(server)) < 0)
             std::cout<<"Failed to connect \n";
 }
 
