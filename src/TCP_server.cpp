@@ -8,7 +8,7 @@ void TCP_server::set_address()
 {
     this->server.sin_family = AF_INET;
     this->server.sin_port = htons(8080);
-    this->server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    this->server.sin_addr.s_addr = INADDR_ANY;
 }
 
 void TCP_server::socket_init()
@@ -71,8 +71,11 @@ void TCP_server::listen_server()
     #endif
 
     #if defined(unix) || defined(__unix__) || defined(__unix)
-    read( client_so , buffer, 1024); 
-    std::cout<<"Recieved data : "<< buffer; 
+
+        read( client_so , buffer, 1024); 
+        std::cout<<"Recieved data : "<< buffer;
+
+         
     #endif
     
  
