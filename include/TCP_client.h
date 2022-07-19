@@ -23,9 +23,9 @@ class TCP_client
 {
 public:
     void socket_init();
-    void set_address();
+    void set_address(const char * serverAddress);
     void connect_to_server();
-    void send_server(char *message);
+    void send_server(const char *message);
 
 private:
     char buffer[BUFFER_SIZE];

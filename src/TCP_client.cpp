@@ -1,12 +1,13 @@
 #include "TCP_client.h"
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
 
-void TCP_client::set_address()
+void TCP_client::set_address(const char * serverAddress)
 {
     this->server.sin_family = AF_INET;
     this->server.sin_port = htons(8080);
-    this->server.sin_addr.s_addr = inet_addr("127.0.0.1"); 
+    this->server.sin_addr.s_addr = inet_addr(serverAddress); 
 }
 
 void TCP_client::socket_init()
@@ -18,7 +19,6 @@ void TCP_client::socket_init()
     }
     #endif
 
-    this-> set_address();
     this-> so = socket(AF_INET,SOCK_STREAM,0);
     if(this->so ==0)
     {
@@ -32,11 +32,12 @@ void TCP_client::connect_to_server()
             std::cout<<"Failed to connect \n";
 }
 
-void TCP_client::send_server(char * message)
+void TCP_client::send_server(const char * message)
 { 
     while(1) 
     {
         std::cout<<"Sending Message to [SERVER] \n";
         send(so, message, strlen(message) + 1, 0);
+        // sleep(1);
     }
 }
