@@ -63,10 +63,17 @@ void TCP_server::listen_server()
             std::cerr<<"Accept:" <<errno; 
             exit(EXIT_FAILURE); 
         }
+
+    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+        recv(this->client_so,buffer,BUFFER_SIZE_CLIENT,0);
+        std::cout<<"Recieved data : "<< buffer;
+        closesocket(client_so);
+    #endif
+
+    #if defined(unix) || defined(__unix__) || defined(__unix)
     read( client_so , buffer, 1024); 
     std::cout<<"Recieved data : "<< buffer; 
-    
-    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
-        closesocket(client_socket);
     #endif
+    
+ 
 }

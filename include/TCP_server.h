@@ -29,7 +29,7 @@ private:
     #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
         SOCKET server_so, client_so;
         WSADATA wsa;
-        int client_length;
+        int addr_length;
     #endif
 
     #if defined(unix) || defined(__unix__) || defined(__unix)
