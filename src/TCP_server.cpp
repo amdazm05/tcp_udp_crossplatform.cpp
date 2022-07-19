@@ -50,7 +50,7 @@ void handle_client(int client_socket)
 void TCP_server::listen_server()
 {
     char buffer[BUFFER_SIZE_CLIENT];
-
+    char ack[]="ACK";
     this->addr_length=sizeof(server);
     if (listen(server_so, 3) < 0) 
     {
@@ -73,8 +73,8 @@ void TCP_server::listen_server()
     #if defined(unix) || defined(__unix__) || defined(__unix)
 
         read( client_so , buffer, 1024); 
-        std::cout<<"Recieved data : "<< buffer;
-
+        std::cout<<"Recieved data : "<< buffer <<"\n";
+        sendto( client_so,ack,sizeof(ack),0,(struct sockaddr *)&server,(socklen_t )this->addr_length);
          
     #endif
     
