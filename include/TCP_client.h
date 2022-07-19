@@ -3,8 +3,21 @@
 
 #define PORT 8080
 #define BUFFER_SIZE 200
-#include <winsock2.h>
-#include <ws2tcpip.h>
+
+#if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+#endif
+
+#if defined(unix) || defined(__unix__) || defined(__unix)
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <sys/types.h>
+    #include <arpa/inet.h>
+#endif
+
+
 
 class TCP_client
 {
@@ -21,8 +34,15 @@ private:
     struct sockaddr_in server;
     int bytes_received;
     int protocol;
-    SOCKET so;
-    WSADATA wsa;
+    #if defined(unix) || defined(__unix__) || defined(__unix)
+        int so;
+    #endif
+
+    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+        SOCKET so;
+        WSADATA wsa;
+    #endif
+        
 };
 
 #endif

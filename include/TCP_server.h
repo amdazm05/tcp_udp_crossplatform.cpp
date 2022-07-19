@@ -1,7 +1,19 @@
-#ifndef _TCPH
-#define _TCPH
-#include <winsock2.h>
-#include <ws2tcpip.h>
+#ifndef _TCPS
+#define _TCPS
+
+#if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+#endif
+
+#if defined(unix) || defined(__unix__) || defined(__unix)
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+#endif
+
 #define BUFFER_SIZE_CLIENT 100
 typedef int socklen;
 class TCP_server
@@ -14,13 +26,20 @@ public:
     void listen_server();
 
 private:
-    SOCKET server_so, client_so;
-    WSADATA wsa;
+    #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+        SOCKET server_so, client_so;
+        WSADATA wsa;
+        int addr_length;
+    #endif
+
+    #if defined(unix) || defined(__unix__) || defined(__unix)
+        int server_so,client_so;
+        int addr_length;
+    #endif
     char *ip;
     int bytes_received;
-    int client_length;
     unsigned short port;
-    struct sockaddr_in server, client;
+    struct sockaddr_in server;
 };
 
 #endif
