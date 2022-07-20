@@ -5,4 +5,4 @@ For Linux based system use
 ``` mkdir build
     cd build
     cmake .. 
-    make ```
+    make 
