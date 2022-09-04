@@ -35,3 +35,4 @@ class UDP_Server
         sockaddr_in destination;
         SOCKET socket_fd;
 };
+#endif

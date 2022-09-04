@@ -28,6 +28,7 @@ class UDP_Client
    private:
         WSAData data;
         SOCKADDR socketaddress;
-        sockaddr_in server_add;
+        sockaddr_in server_;
         SOCKET socket_fd;
 };
+#endif

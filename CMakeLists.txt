@@ -5,6 +5,8 @@ add_library(
     STATIC
     ${PROJECT_SOURCE_DIR}/src/TCP_client.cpp
     ${PROJECT_SOURCE_DIR}/src/TCP_server.cpp
+    ${PROJECT_SOURCE_DIR}/src/UDP_client.cpp
+    ${PROJECT_SOURCE_DIR}/src/UDP_server.cpp
 )
 target_include_directories(
     ${PROJECT_NAME} 
